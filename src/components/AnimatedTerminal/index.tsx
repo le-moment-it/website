@@ -11,27 +11,30 @@ interface AnimatedTerminalProps {
 }
 
 const ALL_LOG_LINES = [
-    'unpacking infrastructure as code …',
-    'loading Kubernetes cluster …',
-    'validating CI/CD pipeline templates …',
-    'fetching Docker image layers …',
-    'initializing Terraform state …',
-    'applying Helm chart defaults …',
-    'compiling Ansible playbooks …',
-    'checking Vault secrets engine …',
-    'updating Prometheus alert rules …',
-    'pulling Jenkins pipeline definitions …',
-    'synchronizing GitOps repository …',
-    'optimizing container registry metadata …',
-    'generating Kubernetes manifests …',
-    'bootstrapping service mesh proxies …',
-    'deploying monitoring dashboards …',
-    'rendering Grafana panels …',
-    'executing network policy tests …',
-    'verifying certificate rotations …',
-    'scanning container images for vulnerabilities …',
-    'refreshing load balancer configurations …',
+    'Removing copy paste content 🗑️ ...',
+    'Clearing browser cache for the 47th time 🧹 ...',
+    'Teaching CSS to behave properly 📚 ...',
+    'Convincing database it worked yesterday 💬 ...',
+    'Updating dependencies that nobody understands 📦 ...',
+    'Fixing the fix that fixed the previous fix 🔧 ...',
+    'Restarting service until it works 🔄 ...',
+    'Applying magic configuration changes ✨ ...',
+    'Praying to the deployment gods 🙏 ...',
+    'Turning it off and on again 🔌 ...',
+    'Removing hardcoded localhost URLs 🗑️ ...',
+    'Explaining to junior dev why we need staging 👨‍🏫 ...',
+    'Rolling back the rollback of the rollback ⏪ ...',
+    'Installing "works on my machine" compatibility layer 💻 ...',
+    'Debugging code written at 3am on Friday 🌙 ...',
+    'Adding more logging to debug the logging 📋 ...',
+    'Waiting for DNS to propagate (eventually) ⏰ ...',
+    'Configuring environment variables nobody documented 📝 ...',
+    'Removing TODO comments from production code ❌ ...',
+    'Optimizing performance by adding more servers 🚀 ...',
 ];
+
+
+
 
 const shuffle = <T,>(arr: T[]): T[] =>
     [...arr].sort(() => Math.random() - 0.5);
@@ -44,7 +47,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
 }) => {
     // Construct lines: install, 8 logs, success
     const lines = useMemo(() => {
-        const logs = shuffle(ALL_LOG_LINES).slice(0, 8);
+        const logs = shuffle(ALL_LOG_LINES).slice(0, 5);
         return [
             'apt install --without-bad-practices devops',
             ...logs,
