@@ -88,12 +88,14 @@
     margin-bottom: 0.5rem;
 }
 
-/* Log lines: smaller, italic, ultra-fast */
+/* Log lines: smaller, italic, ultra-fast, indented */
 .logLine {
     font-size: 14px;
     font-style: italic;
     line-height: 1.4;
     margin-bottom: 0.3rem;
+    padding-left: 24px;
+    /* Align with "apt" command */
 }
 
 /* Success line */
@@ -102,6 +104,8 @@
     font-weight: 600;
     margin-top: 0.5rem;
     color: var(--ifm-color-success);
+    padding-left: 24px;
+    /* Align with "apt" command */
 }
 
 /* Prompt */
@@ -137,14 +141,39 @@
     }
 }
 
-.linkLine {
+/* ASCII Button Styles */
+.buttonContainer {
     margin-top: 1rem;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.2;
 }
 
-.link {
+.asciiButton {
+    font-family: inherit;
+    line-height: 1;
+}
+
+.buttonLine {
+    margin: 0;
+    line-height: 1;
+}
+
+.buttonBorder {
+    color: var(--ifm-color-emphasis-600);
+    user-select: none;
+}
+
+.buttonLink {
     color: var(--ifm-color-primary);
-    text-decoration: underline;
+    text-decoration: none;
     font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.buttonLink:hover {
+    color: var(--ifm-color-primary-dark);
+    text-shadow: 0 0 8px var(--ifm-color-primary);
 }
 
 /* Responsive adjustments */
@@ -155,5 +184,29 @@
 
     .logLine {
         font-size: 12px;
+        padding-left: 20px;
+    }
+
+    .successLine {
+        padding-left: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logLine {
+        padding-left: 18px;
+    }
+
+    .successLine {
+        padding-left: 18px;
+    }
+
+    .buttonContainer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .asciiButton {
+        margin-left: 24px;
     }
 }

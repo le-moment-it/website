@@ -48,7 +48,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
         return [
             'apt install --without-bad-practices devops',
             ...logs,
-            '🚀 Success!',
+            '🚀 Success !',
         ];
     }, []);
 
@@ -138,6 +138,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
                     ))}
                     {lineIndex >= lines.length && (
                         <div className={styles.linkLine}>
+                            <span className={styles.prompt}>$</span>
                             <Link to={link.to} className={styles.link}>
                                 {link.text}
                             </Link>

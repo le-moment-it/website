@@ -18,7 +18,7 @@ export default function Home() {
           startDelay={1000}
           cursor
           link={{
-            text: 'Open DevOps Build Intro →',
+            text: 'Starts now !',
             to: '/docs/devops/build/intro',
           }}
         />
