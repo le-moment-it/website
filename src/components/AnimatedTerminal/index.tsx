@@ -47,7 +47,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
 }) => {
     // Construct lines: install, 8 logs, success
     const lines = useMemo(() => {
-        const logs = shuffle(ALL_LOG_LINES).slice(0, 5);
+        const logs = shuffle(ALL_LOG_LINES).slice(0, 8);
         return [
             'apt install --without-bad-practices devops',
             ...logs,
