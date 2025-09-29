@@ -80,20 +80,28 @@
     justify-content: flex-start;
 }
 
-/* First line */
+/* Install command line */
 .terminalLine {
     display: flex;
     align-items: center;
     line-height: 1.5;
-    font-size: inherit;
     margin-bottom: 0.5rem;
 }
 
-/* Log lines: smaller font */
+/* Log lines: smaller, italic, ultra-fast */
 .logLine {
-    line-height: 1.4;
     font-size: 14px;
+    font-style: italic;
+    line-height: 1.4;
     margin-bottom: 0.3rem;
+}
+
+/* Success line */
+.successLine {
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: var(--ifm-color-success);
 }
 
 /* Prompt */
@@ -106,7 +114,6 @@
 
 .command {
     color: var(--ifm-font-color-base);
-    font-weight: 500;
 }
 
 /* Cursor */

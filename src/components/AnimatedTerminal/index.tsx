@@ -42,10 +42,14 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
     cursor = true,
     link = { text: 'Open DevOps Build Intro →', to: '/docs/devops/build/intro' },
 }) => {
-    // First line plus 3 random logs
+    // Construct lines: install, 8 logs, success
     const lines = useMemo(() => {
-        const logs = shuffle(ALL_LOG_LINES).slice(0, 3);
-        return ['apt install --without-bad-practices devops', ...logs];
+        const logs = shuffle(ALL_LOG_LINES).slice(0, 8);
+        return [
+            'apt install --without-bad-practices devops',
+            ...logs,
+            '🚀 Success!',
+        ];
     }, []);
 
     const [displayLines, setDisplayLines] = useState<string[]>([]);
@@ -57,17 +61,19 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
     const cursorRef = useRef<NodeJS.Timeout | null>(null);
     const { colorMode } = useColorMode();
 
+    // Start typing after startDelay
     useEffect(() => {
         const timer = setTimeout(() => setHasStarted(true), startDelay);
         return () => clearTimeout(timer);
     }, [startDelay]);
 
+    // Typing animation
     useEffect(() => {
         if (!hasStarted || lineIndex >= lines.length) return;
 
         const current = lines[lineIndex];
-        // Faster speed for log lines
-        const speed = lineIndex === 0 ? typingSpeed : 20;
+        // Use ultra-fast speed for logs and success
+        const speed = lineIndex === 0 ? typingSpeed : 10;
 
         if (charIndex < current.length) {
             intervalRef.current = setTimeout(() => {
@@ -79,6 +85,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
                 setCharIndex(ci => ci + 1);
             }, speed);
         } else {
+            // Pause then advance
             intervalRef.current = setTimeout(() => {
                 setLineIndex(li => li + 1);
                 setCharIndex(0);
@@ -90,6 +97,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
         };
     }, [charIndex, hasStarted, lineIndex, lines, typingSpeed]);
 
+    // Cursor blink
     useEffect(() => {
         if (!cursor) return;
         cursorRef.current = setInterval(() => setShowCursor(s => !s), 600);
@@ -114,7 +122,11 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
                         <div
                             key={idx}
                             className={
-                                idx === 0 ? styles.terminalLine : styles.logLine
+                                idx === 0
+                                    ? styles.terminalLine
+                                    : idx < lines.length - 1
+                                        ? styles.logLine
+                                        : styles.successLine
                             }
                         >
                             {idx === 0 && <span className={styles.prompt}>$</span>}
