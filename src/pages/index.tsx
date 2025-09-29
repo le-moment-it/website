@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <Layout
-      title="Front end interview preparation for busy engineers"
+      title="Welcome"
       description={siteConfig.tagline}>
       <div>
         <HeroSection />
