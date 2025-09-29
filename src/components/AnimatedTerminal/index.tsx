@@ -1,25 +1,53 @@
-// src/components/AnimatedTerminal/index.tsx
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useColorMode } from '@docusaurus/theme-common';
 import styles from './styles.module.css';
 import Link from '@docusaurus/Link';
 
 interface AnimatedTerminalProps {
-    lines: string[];
     typingSpeed?: number;
     startDelay?: number;
     cursor?: boolean;
     link?: { text: string; to: string };
 }
 
+const ALL_LOG_LINES = [
+    'unpacking infrastructure as code …',
+    'loading Kubernetes cluster …',
+    'validating CI/CD pipeline templates …',
+    'fetching Docker image layers …',
+    'initializing Terraform state …',
+    'applying Helm chart defaults …',
+    'compiling Ansible playbooks …',
+    'checking Vault secrets engine …',
+    'updating Prometheus alert rules …',
+    'pulling Jenkins pipeline definitions …',
+    'synchronizing GitOps repository …',
+    'optimizing container registry metadata …',
+    'generating Kubernetes manifests …',
+    'bootstrapping service mesh proxies …',
+    'deploying monitoring dashboards …',
+    'rendering Grafana panels …',
+    'executing network policy tests …',
+    'verifying certificate rotations …',
+    'scanning container images for vulnerabilities …',
+    'refreshing load balancer configurations …',
+];
+
+const shuffle = <T,>(arr: T[]): T[] =>
+    [...arr].sort(() => Math.random() - 0.5);
+
 const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
-    lines,
-    typingSpeed = 100,
+    typingSpeed = 80,
     startDelay = 1000,
     cursor = true,
-    link,
+    link = { text: 'Open DevOps Build Intro →', to: '/docs/devops/build/intro' },
 }) => {
+    // First line plus 3 random logs
+    const lines = useMemo(() => {
+        const logs = shuffle(ALL_LOG_LINES).slice(0, 3);
+        return ['apt install --without-bad-practices devops', ...logs];
+    }, []);
+
     const [displayLines, setDisplayLines] = useState<string[]>([]);
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
@@ -36,7 +64,11 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
 
     useEffect(() => {
         if (!hasStarted || lineIndex >= lines.length) return;
+
         const current = lines[lineIndex];
+        // Faster speed for log lines
+        const speed = lineIndex === 0 ? typingSpeed : 20;
+
         if (charIndex < current.length) {
             intervalRef.current = setTimeout(() => {
                 setDisplayLines(prev => {
@@ -44,14 +76,15 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
                     updated[lineIndex] = current.slice(0, charIndex + 1);
                     return updated;
                 });
-                setCharIndex(c => c + 1);
-            }, typingSpeed);
+                setCharIndex(ci => ci + 1);
+            }, speed);
         } else {
             intervalRef.current = setTimeout(() => {
-                setLineIndex(i => i + 1);
+                setLineIndex(li => li + 1);
                 setCharIndex(0);
-            }, typingSpeed * 5);
+            }, speed * 3);
         }
+
         return () => {
             if (intervalRef.current) clearTimeout(intervalRef.current);
         };
@@ -78,13 +111,20 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
                 </div>
                 <div className={styles.terminalBody}>
                     {displayLines.map((line, idx) => (
-                        <div key={idx} className={styles.terminalLine}>
-                            <span className={styles.prompt}>$</span>
+                        <div
+                            key={idx}
+                            className={
+                                idx === 0 ? styles.terminalLine : styles.logLine
+                            }
+                        >
+                            {idx === 0 && <span className={styles.prompt}>$</span>}
                             <span className={styles.command}>{line}</span>
-                            {idx === lineIndex && showCursor && <span className={styles.cursor}>█</span>}
+                            {idx === lineIndex && showCursor && (
+                                <span className={styles.cursor}>█</span>
+                            )}
                         </div>
                     ))}
-                    {lineIndex >= lines.length && link && (
+                    {lineIndex >= lines.length && (
                         <div className={styles.linkLine}>
                             <Link to={link.to} className={styles.link}>
                                 {link.text}
