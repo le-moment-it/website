@@ -1,72 +1,67 @@
+// src/components/AnimatedTerminal/index.tsx
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useColorMode } from '@docusaurus/theme-common';
 import styles from './styles.module.css';
+import Link from '@docusaurus/Link';
 
 interface AnimatedTerminalProps {
-    text: string;
+    lines: string[];
     typingSpeed?: number;
     startDelay?: number;
     cursor?: boolean;
+    link?: { text: string; to: string };
 }
 
 const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
-    text,
+    lines,
     typingSpeed = 100,
     startDelay = 1000,
-    cursor = true
+    cursor = true,
+    link,
 }) => {
-    const [displayText, setDisplayText] = useState('');
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [displayLines, setDisplayLines] = useState<string[]>([]);
+    const [lineIndex, setLineIndex] = useState(0);
+    const [charIndex, setCharIndex] = useState(0);
     const [showCursor, setShowCursor] = useState(true);
-    const [isTypingComplete, setIsTypingComplete] = useState(false);
     const [hasStarted, setHasStarted] = useState(false);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
-    const cursorIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-    // Get current theme mode from Docusaurus
+    const cursorRef = useRef<NodeJS.Timeout | null>(null);
     const { colorMode } = useColorMode();
 
-    // Start typing after initial delay
     useEffect(() => {
-        const startTimer = setTimeout(() => {
-            setHasStarted(true);
-        }, startDelay);
-
-        return () => clearTimeout(startTimer);
+        const timer = setTimeout(() => setHasStarted(true), startDelay);
+        return () => clearTimeout(timer);
     }, [startDelay]);
 
-    // Typing animation
     useEffect(() => {
-        if (!hasStarted) return;
-
-        if (currentIndex < text.length) {
+        if (!hasStarted || lineIndex >= lines.length) return;
+        const current = lines[lineIndex];
+        if (charIndex < current.length) {
             intervalRef.current = setTimeout(() => {
-                setDisplayText(text.slice(0, currentIndex + 1));
-                setCurrentIndex(currentIndex + 1);
+                setDisplayLines(prev => {
+                    const updated = [...prev];
+                    updated[lineIndex] = current.slice(0, charIndex + 1);
+                    return updated;
+                });
+                setCharIndex(c => c + 1);
             }, typingSpeed);
         } else {
-            setIsTypingComplete(true);
+            intervalRef.current = setTimeout(() => {
+                setLineIndex(i => i + 1);
+                setCharIndex(0);
+            }, typingSpeed * 5);
         }
-
         return () => {
-            if (intervalRef.current) {
-                clearTimeout(intervalRef.current);
-            }
+            if (intervalRef.current) clearTimeout(intervalRef.current);
         };
-    }, [currentIndex, text, typingSpeed, hasStarted]);
+    }, [charIndex, hasStarted, lineIndex, lines, typingSpeed]);
 
-    // Cursor blinking animation
     useEffect(() => {
         if (!cursor) return;
-
-        cursorIntervalRef.current = setInterval(() => {
-            setShowCursor(prev => !prev);
-        }, 600);
-
+        cursorRef.current = setInterval(() => setShowCursor(s => !s), 600);
         return () => {
-            if (cursorIntervalRef.current) {
-                clearInterval(cursorIntervalRef.current);
-            }
+            if (cursorRef.current) clearInterval(cursorRef.current);
         };
     }, [cursor]);
 
@@ -75,18 +70,27 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
             <div className={`${styles.terminal} ${styles[colorMode]}`}>
                 <div className={styles.terminalHeader}>
                     <div className={styles.terminalButtons}>
-                        <span className={`${styles.terminalButton} ${styles.red}`}></span>
-                        <span className={`${styles.terminalButton} ${styles.yellow}`}></span>
-                        <span className={`${styles.terminalButton} ${styles.green}`}></span>
+                        <span className={`${styles.terminalButton} ${styles.red}`} />
+                        <span className={`${styles.terminalButton} ${styles.yellow}`} />
+                        <span className={`${styles.terminalButton} ${styles.green}`} />
                     </div>
-                    <div className={styles.terminalTitle}>Terminal</div>
+                    <div className={styles.terminalTitle}>terminal</div>
                 </div>
                 <div className={styles.terminalBody}>
-                    <div className={styles.terminalLine}>
-                        <span className={styles.prompt}>$</span>
-                        <span className={styles.command}>{displayText}</span>
-                        {cursor && showCursor && <span className={styles.cursor}>█</span>}
-                    </div>
+                    {displayLines.map((line, idx) => (
+                        <div key={idx} className={styles.terminalLine}>
+                            <span className={styles.prompt}>$</span>
+                            <span className={styles.command}>{line}</span>
+                            {idx === lineIndex && showCursor && <span className={styles.cursor}>█</span>}
+                        </div>
+                    ))}
+                    {lineIndex >= lines.length && link && (
+                        <div className={styles.linkLine}>
+                            <Link to={link.to} className={styles.link}>
+                                {link.text}
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
