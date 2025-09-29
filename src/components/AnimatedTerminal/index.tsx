@@ -40,7 +40,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
     typingSpeed = 80,
     startDelay = 1000,
     cursor = true,
-    link = { text: 'Open DevOps Build Intro →', to: '/docs/devops/build/intro' },
+    link = { text: 'Start now !', to: '/docs/devops/build/intro' },
 }) => {
     // Construct lines: install, 8 logs, success
     const lines = useMemo(() => {
@@ -137,9 +137,8 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
                         </div>
                     ))}
                     {lineIndex >= lines.length && (
-                        <div className={styles.linkLine}>
-                            <span className={styles.prompt}>$</span>
-                            <Link to={link.to} className={styles.link}>
+                        <div className={styles.buttonContainer}>
+                            <Link to={link.to} className={styles.ctaButton}>
                                 {link.text}
                             </Link>
                         </div>
