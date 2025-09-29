@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useColorMode } from '@docusaurus/theme-common';
 import styles from './styles.module.css';
 
 interface AnimatedTerminalProps {
@@ -21,6 +22,9 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
     const [hasStarted, setHasStarted] = useState(false);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const cursorIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+    // Get current theme mode from Docusaurus
+    const { colorMode } = useColorMode();
 
     // Start typing after initial delay
     useEffect(() => {
@@ -68,22 +72,20 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
 
     return (
         <div className={styles.terminalContainer}>
-            <div className={styles.terminal}>
+            <div className={`${styles.terminal} ${styles[colorMode]}`}>
                 <div className={styles.terminalHeader}>
                     <div className={styles.terminalButtons}>
                         <span className={`${styles.terminalButton} ${styles.red}`}></span>
                         <span className={`${styles.terminalButton} ${styles.yellow}`}></span>
                         <span className={`${styles.terminalButton} ${styles.green}`}></span>
                     </div>
-                    <div className={styles.terminalTitle}>terminal</div>
+                    <div className={styles.terminalTitle}>Terminal</div>
                 </div>
                 <div className={styles.terminalBody}>
                     <div className={styles.terminalLine}>
                         <span className={styles.prompt}>$</span>
-                        <span className={styles.command}>
-                            {displayText}
-                            {cursor && showCursor && <span className={styles.cursor}>█</span>}
-                        </span>
+                        <span className={styles.command}>{displayText}</span>
+                        {cursor && showCursor && <span className={styles.cursor}>█</span>}
                     </div>
                 </div>
             </div>

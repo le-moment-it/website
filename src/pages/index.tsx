@@ -13,10 +13,13 @@ export default function Home() {
   return (
     <Layout
       title="Welcome"
-      description={siteConfig.tagline}>
-      <div>
-        <HeroSection />
-      </div>
+      description={siteConfig.tagline}
+    >
+      <HeroSection />
+      <main>
+        <TerminalSection />
+        {/* Add other sections here as needed */}
+      </main>
     </Layout>
   );
 }
@@ -25,34 +28,38 @@ function HeroSection() {
   const { siteConfig = {} } = useDocusaurusContext();
 
   return (
-    <header className={clsx('hero', styles.heroBanner)}>
+    <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
-        <div className="row">
-          <div className="col col--8 col--offset-2">
-            <img
-              alt={siteConfig.title}
-              className={clsx(styles.heroBannerLogo, 'margin-vert--md')}
-              src={useBaseUrl('img/docusaurus.svg')}
-            />
-            <h1 className="hero__title">DevOps Architecture</h1>
-            <p className="hero__subtitle">{siteConfig.tagline}</p>
-            <div className={styles.buttons}>
-              <Link
-                className={clsx(
-                  'button button--primary button--lg',
-                  styles.getStarted,
-                )}
-                to="/introduction">
-                Start reading&nbsp;&nbsp;→
-              </Link>
-            </div>
-            <p className="margin-top--md">
-              <em>It's completely free to read!</em>
-            </p>
-
-          </div>
+        <h1 className="hero__title">{siteConfig.title}</h1>
+        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <div className={styles.buttons}>
+          <Link
+            className="button button--secondary button--lg"
+            to="/docs"
+          >
+            Get Started
+          </Link>
         </div>
       </div>
     </header>
+  );
+}
+
+function TerminalSection() {
+  return (
+    <section className={styles.terminalSection}>
+      <div className="container">
+        <div className="row">
+          <div className="col col--12">
+            <AnimatedTerminal
+              text="Welcome to Le Moment IT - DevOps the Good way !"
+              typingSpeed={80}
+              startDelay={1500}
+              cursor={true}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
