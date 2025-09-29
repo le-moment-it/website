@@ -111,13 +111,21 @@ const config: Config = {
           position: 'left',
           items: [
             {
-              label: 'Kubernetes',
-              to: 'docs/infrastructure/kubernetes/intro',
+              label: 'Computing',
+              to: 'docs/infrastructure/data-store/intro',
             },
             {
               label: 'Data store',
               to: 'docs/infrastructure/data-store/intro',
-            }
+            },
+            {
+              label: 'Network',
+              to: 'docs/infrastructure/data-store/intro',
+            },
+            {
+              label: 'Kubernetes',
+              to: 'docs/infrastructure/kubernetes/intro',
+            },
           ],
         },
         {
