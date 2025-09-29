@@ -5,6 +5,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Link from '@docusaurus/Link';
 import styles from './index.module.css';
+import AnimatedTerminal from '../components/AnimatedTerminal';
 
 export default function Home() {
   const { siteConfig = {} } = useDocusaurusContext();
@@ -48,6 +49,7 @@ function HeroSection() {
             <p className="margin-top--md">
               <em>It's completely free to read!</em>
             </p>
+
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 {
-    "label": "Continuous Delivery",
+    "label": "Build",
     "position": 2,
     "link": {
         "type": "generated-index",

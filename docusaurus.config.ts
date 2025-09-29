@@ -92,8 +92,12 @@ const config: Config = {
           position: 'left',
           items: [
             {
-              label: 'Concepts',
-              to: 'docs/devops/concepts/intro',
+              label: 'Code',
+              to: 'docs/devops/code/intro',
+            },
+            {
+              label: 'Build',
+              to: 'docs/devops/build/intro',
             },
             {
               label: 'Continuous Delivery',
