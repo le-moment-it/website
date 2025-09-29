@@ -15,7 +15,7 @@ export default function Home() {
             '(fake install of devops logs)',
           ]}
           typingSpeed={80}
-          startDelay={1000}
+          startDelay={500}
           cursor
           link={{
             text: 'Starts now !',

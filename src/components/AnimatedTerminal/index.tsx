@@ -38,7 +38,7 @@ const shuffle = <T,>(arr: T[]): T[] =>
 
 const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
     typingSpeed = 80,
-    startDelay = 1000,
+    startDelay = 500,
     cursor = true,
     link = { text: 'Start now !', to: '/docs/devops/build/intro' },
 }) => {
@@ -115,7 +115,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
                         <span className={`${styles.terminalButton} ${styles.yellow}`} />
                         <span className={`${styles.terminalButton} ${styles.green}`} />
                     </div>
-                    <div className={styles.terminalTitle}>terminal</div>
+                    <div className={styles.terminalTitle}>Le-Moment-IT</div>
                 </div>
                 <div className={styles.terminalBody}>
                     {displayLines.map((line, idx) => (
