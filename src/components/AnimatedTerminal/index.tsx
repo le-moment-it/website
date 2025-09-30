@@ -49,7 +49,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
     const lines = useMemo(() => {
         const logs = shuffle(ALL_LOG_LINES).slice(0, 8);
         return [
-            'apt install --without-bad-practices devops',
+            'apt install --with-good-practices --secure devops',
             ...logs,
             '🚀 Success !',
         ];
