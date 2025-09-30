@@ -43,7 +43,7 @@ const AnimatedTerminal: React.FC<AnimatedTerminalProps> = ({
     typingSpeed = 80,
     startDelay = 500,
     cursor = true,
-    link = { text: 'Start now !', to: '/docs/devops/build/intro' },
+    link = { text: 'Start now !', to: '/docs/devops/intro' },
 }) => {
     // Construct lines: install, 8 logs, success
     const lines = useMemo(() => {

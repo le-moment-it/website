@@ -15,7 +15,7 @@ export default function Home() {
           cursor
           link={{
             text: 'Starts now !',
-            to: '/docs/devops/build/intro',
+            to: '/docs/devops/intro',
           }}
         />
       </main>
