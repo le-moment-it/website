@@ -92,16 +92,36 @@ const config: Config = {
           position: 'left',
           items: [
             {
-              label: 'Code',
+              label: 'Planning',
+              to: 'docs/devops/plan/intro',
+            },
+            {
+              label: 'Coding',
               to: 'docs/devops/code/intro',
             },
             {
-              label: 'Build',
+              label: 'Building',
               to: 'docs/devops/build/intro',
             },
             {
-              label: 'Continuous Delivery',
-              to: 'docs/devops/continuous-delivery/intro',
+              label: 'Testing',
+              to: 'docs/devops/test/intro',
+            },
+            {
+              label: 'Release',
+              to: 'docs/devops/release/intro',
+            },
+            {
+              label: 'Deploy',
+              to: 'docs/devops/deploy/intro',
+            },
+            {
+              label: 'Operate',
+              to: 'docs/devops/operate/intro',
+            },
+            {
+              label: 'Monitor',
+              to: 'docs/devops/monitor/intro',
             },
             {
               label: 'Tools & Systems',

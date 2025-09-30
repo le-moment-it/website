@@ -10,10 +10,6 @@ export default function Home() {
     <Layout title="Welcome" description={siteConfig.tagline}>
       <main className={styles.main}>
         <AnimatedTerminal
-          lines={[
-            'apt install --without-bad-practices devops',
-            '(fake install of devops logs)',
-          ]}
           typingSpeed={80}
           startDelay={500}
           cursor
