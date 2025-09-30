@@ -187,6 +187,7 @@ const config: Config = {
         //   label: 'Architecture',
         // },
         { to: '/Security', label: 'Security', position: 'left' },
+        { to: '/ai', label: 'Artificial Intelligence', position: 'left' },
         { to: '/blog', label: 'PoC & Tools', position: 'left' },
         { to: '/blog', label: 'About', position: 'right' },
         {
