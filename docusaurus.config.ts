@@ -140,7 +140,7 @@ const config: Config = {
           items: [
             {
               label: 'Computing',
-              to: 'docs/infrastructure/data-store/intro',
+              to: 'docs/infrastructure/computing/intro',
             },
             {
               label: 'Data store',
@@ -148,7 +148,7 @@ const config: Config = {
             },
             {
               label: 'Network',
-              to: 'docs/infrastructure/data-store/intro',
+              to: 'docs/infrastructure/network/intro',
             },
             {
               label: 'Kubernetes',
@@ -190,7 +190,17 @@ const config: Config = {
         //   position: 'left',
         //   label: 'Architecture',
         // },
-        { to: '/Security', label: 'Security', position: 'left' },
+        {
+          type: 'dropdown',
+          label: 'Security',
+          position: 'left',
+          items: [
+            {
+              label: 'Protocols',
+              to: 'docs/security/protocols/intro',
+            },
+          ]
+        },
         { to: '/ai', label: 'Artificial Intelligence', position: 'left' },
         { to: '/blog', label: 'PoC & Tools', position: 'left' },
         { to: '/blog', label: 'About', position: 'right' },
