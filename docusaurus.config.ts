@@ -69,7 +69,49 @@ const config: Config = {
   markdown: {
     mermaid: true,
   },
-  themes: ['@docusaurus/theme-mermaid'],
+  themes: [
+    '@docusaurus/theme-mermaid',
+    [
+      require.resolve('@easyops-cn/docusaurus-search-local'),
+      {
+        // Whether to hash the search index file
+        hashed: true,
+
+        // Set language support (English and French based on your location)
+        language: ['en', 'fr'],
+
+        // Index documentation pages
+        indexDocs: true,
+
+        // Index blog posts
+        indexBlog: true,
+
+        // Don't index regular pages (set to true if you have custom pages to index)
+        indexPages: false,
+
+        // Base paths for docs and blog
+        docsRouteBasePath: '/docs',
+        blogRouteBasePath: '/blog',
+
+        // Limit search results
+        searchResultLimits: 8,
+
+        // Highlight search terms on target pages
+        highlightSearchTermsOnTargetPage: true,
+
+        // Keyboard shortcut to focus search (default is Ctrl+K or Cmd+K)
+        searchBarShortcut: true,
+
+        // If you want to use a custom keyboard shortcut:
+        // searchBarShortcutHint: false,
+
+        // Remove stopwords for better search results
+        removeDefaultStopWordFilter: false,
+
+      },
+    ],
+
+  ],
   themeConfig: {
     tableOfContents: {
       minHeadingLevel: 2,
@@ -201,15 +243,14 @@ const config: Config = {
             },
           ]
         },
-        { to: '/ai', label: 'Artificial Intelligence', position: 'left' },
+        { to: '/ai', label: 'AI', position: 'left' },
         { to: '/blog', label: 'PoC & Tools', position: 'left' },
-        { to: '/blog', label: 'About', position: 'right' },
         {
           type: 'search',
           position: 'right',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/le-moment-it/website',
           label: 'GitHub',
           position: 'right',
         },
@@ -260,9 +301,6 @@ const config: Config = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Le Moment IT`,
     },
-    plugins: [
-      require.resolve("docusaurus-lunr-search")
-    ],
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
