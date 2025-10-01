@@ -84,20 +84,19 @@ const config: Config = {
         indexDocs: true,
 
         // Index blog posts
-        indexBlog: true,
+        indexBlog: false,
 
         // Don't index regular pages (set to true if you have custom pages to index)
         indexPages: false,
 
         // Base paths for docs and blog
         docsRouteBasePath: '/docs',
-        blogRouteBasePath: '/blog',
 
         // Limit search results
         searchResultLimits: 8,
 
         // Highlight search terms on target pages
-        highlightSearchTermsOnTargetPage: true,
+        highlightSearchTermsOnTargetPage: false,
 
         // Keyboard shortcut to focus search (default is Ctrl+K or Cmd+K)
         searchBarShortcut: true,

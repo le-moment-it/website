@@ -108,17 +108,17 @@ return [
               ]
             },
             {
+              name: 'csr',
+              type: 'directory',
+              children: []
+            },
+            {
               name: 'private',
               type: 'directory',
               children: [
                 { name: 'client_c_root_ca.key', type: 'file', content: key },
               ]
             },
-            {
-              name: 'csr',
-              type: 'directory',
-              children: []
-            }
           ]
         },
       ],
@@ -200,36 +200,16 @@ const key = `
 -----END ENCRYPTED PRIVATE KEY-----
 
 `.trim();
+const srl = `
+7A3C8F1B5EXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+`.trim();
+
 return [
     {
       name: 'mTLS',
       type: 'directory',
       children: [
-        {
-          name: 'client_c_ca',
-          type: 'directory',
-          children: [
-            {
-              name: 'certs',
-              type: 'directory',
-              children: [
-                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
-              ]
-            },
-            {
-              name: 'private',
-              type: 'directory',
-              children: [
-                { name: 'client_c_root_ca.key', type: 'file', content: key },
-              ]
-            },
-            {
-              name: 'csr',
-              type: 'directory',
-              children: []
-            }
-          ]
-        },
         {
           name: 'client_b_ca',
           type: 'directory',
@@ -242,19 +222,44 @@ return [
               ]
             },
             {
+              name: 'csr',
+              type: 'directory',
+              children: []
+            },
+            {
               name: 'private',
               type: 'directory',
               children: [
                 { name: 'client_b_root_ca.key', type: 'file', content: key },
               ]
             },
+          ]
+        },
+        {
+          name: 'client_c_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
+              ]
+            },
             {
               name: 'csr',
               type: 'directory',
               children: []
-            }
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_c_root_ca.key', type: 'file', content: key },
+              ]
+            },
           ]
-        }
+        },
       ],
     }
   ];
@@ -342,40 +347,16 @@ const key = `
 -----END ENCRYPTED PRIVATE KEY-----
 
 `.trim();
+
+const srl = `
+7A3C8F1B5EXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+`.trim();
 return [
     {
       name: 'mTLS',
       type: 'directory',
       children: [
-        {
-          name: 'client_c_ca',
-          type: 'directory',
-          children: [
-            {
-              name: 'certs',
-              type: 'directory',
-              children: [
-                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
-                { name: 'client_c_intermediate_ca.crt', type: 'file', content: certificate },
-              ]
-            },
-            {
-              name: 'private',
-              type: 'directory',
-              children: [
-                { name: 'client_c_root_ca.key', type: 'file', content: key },
-                { name: 'client_c_intermediate_ca.key', type: 'file', content: key },
-              ]
-            },
-            {
-              name: 'csr',
-              type: 'directory',
-              children: [
-                { name: 'client_c_intermediate_ca.csr', type: 'file', content: csr },
-              ]
-            }
-          ]
-        },
         {
           name: 'client_b_ca',
           type: 'directory',
@@ -388,19 +369,49 @@ return [
               ]
             },
             {
+              name: 'csr',
+              type: 'directory',
+              children: []
+            },
+            {
               name: 'private',
               type: 'directory',
               children: [
                 { name: 'client_b_root_ca.key', type: 'file', content: key },
               ]
             },
+          ]
+        },
+        {
+          name: 'client_c_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_root_ca.srl', type: 'file', content: srl },
+              ]
+            },
             {
               name: 'csr',
               type: 'directory',
-              children: []
+              children: [
+                { name: 'client_c_intermediate_ca.csr', type: 'file', content: csr },
+              ]
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_c_root_ca.key', type: 'file', content: key },
+              ]
             }
           ]
-        }
+        },
       ],
     }
   ];
@@ -489,40 +500,15 @@ const key = `
 -----END ENCRYPTED PRIVATE KEY-----
 
 `.trim();
+const srl = `
+7A3C8F1B5EXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+`.trim();
 return [
     {
       name: 'mTLS',
       type: 'directory',
       children: [
-        {
-          name: 'client_c_ca',
-          type: 'directory',
-          children: [
-            {
-              name: 'certs',
-              type: 'directory',
-              children: [
-                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
-                { name: 'client_c_intermediate_ca.crt', type: 'file', content: certificate },
-              ]
-            },
-            {
-              name: 'private',
-              type: 'directory',
-              children: [
-                { name: 'client_c_root_ca.key', type: 'file', content: key },
-                { name: 'client_c_intermediate_ca.key', type: 'file', content: key },
-              ]
-            },
-            {
-              name: 'csr',
-              type: 'directory',
-              children: [
-                { name: 'client_c_intermediate_ca.csr', type: 'file', content: csr },
-              ]
-            }
-          ]
-        },
         {
           name: 'client_b_ca',
           type: 'directory',
@@ -531,16 +517,9 @@ return [
               name: 'certs',
               type: 'directory',
               children: [
-                { name: 'client_b_root_ca.crt', type: 'file', content: certificate },
                 { name: 'client_b_intermediate_ca.crt', type: 'file', content: certificate },
-              ]
-            },
-            {
-              name: 'private',
-              type: 'directory',
-              children: [
-                { name: 'client_b_root_ca.key', type: 'file', content: key },
-                { name: 'client_b_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_b_root_ca.crt', type: 'file', content: certificate },
+                { name: 'client_b_root_ca.srl', type: 'file', content: srl },
               ]
             },
             {
@@ -549,9 +528,47 @@ return [
               children: [
                 { name: 'client_b_intermediate_ca.csr', type: 'file', content: csr },
               ]
-            }
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_b_root_ca.key', type: 'file', content: key },
+              ]
+            },
           ]
-        }
+        },
+        {
+          name: 'client_c_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_root_ca.srl', type: 'file', content: srl },
+              ]
+            },
+            {
+              name: 'csr',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.csr', type: 'file', content: csr },
+              ]
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_c_root_ca.key', type: 'file', content: key },
+              ]
+            },
+          ]
+        },
       ],
     }
   ];
@@ -602,7 +619,126 @@ Verification Command :
   </TabItem>
 
   <TabItem value="filetree-5" label="FileTree" default>
+export const step5 = (() => {
+const certificate = `
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+`.trim();
 
+const chain = `
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+`.trim();
+
+const csr = `
+-----BEGIN CERTIFICATE REQUEST-----
+...
+-----END CERTIFICATE REQUEST-----
+`.trim();
+
+const key = `
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+...
+-----END ENCRYPTED PRIVATE KEY-----
+
+`.trim();
+const srl = `
+7A3C8F1B5EXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+`.trim();
+return [
+    {
+      name: 'mTLS',
+      type: 'directory',
+      children: [
+        {
+          name: 'client_b_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.crt', type: 'file', content: certificate },
+                { name: 'client_b_root_ca.crt', type: 'file', content: certificate },
+                { name: 'client_b_root_ca.srl', type: 'file', content: srl },
+              ]
+            },
+            {
+              name: 'csr',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.csr', type: 'file', content: csr },
+              ]
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_b_root_ca.key', type: 'file', content: key },
+              ]
+            },
+          ]
+        },
+        {
+          name: 'client_b_cert',
+          type: 'directory',
+          children: [
+            { name: 'client_b_to_client_c.csr', type: 'file', content: csr },
+            { name: 'client_b.key', type: 'file', content: key },
+          ],
+        },
+        {
+          name: 'client_c_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_root_ca.srl', type: 'file', content: srl },
+              ]
+            },
+            {
+              name: 'csr',
+              type: 'directory',
+              children: [
+                { name: 'client_b_to_client_c.csr', type: 'file', content: csr },
+                { name: 'client_c_intermediate_ca.csr', type: 'file', content: csr },
+              ]
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_c_root_ca.key', type: 'file', content: key },
+              ]
+            },
+          ]
+        },
+      ],
+    }
+  ];
+})();
+
+<FileTree
+  data={step5}
+  showSidePanel
+  defaultExpanded={true}
+  defaultOpenFile="client_b_intermediate_ca.crt"
+/>
   </TabItem>
   <TabItem value="schema-5" label="Schema" default>
     ![Step5](/img/security/protocols/mtls/step5.png)
@@ -649,7 +785,131 @@ Verification Command :
   </TabItem>
 
   <TabItem value="filetree-6" label="FileTree" default>
+export const step6 = (() => {
+const certificate = `
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+`.trim();
 
+const chain = `
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+`.trim();
+
+const csr = `
+-----BEGIN CERTIFICATE REQUEST-----
+...
+-----END CERTIFICATE REQUEST-----
+`.trim();
+
+const key = `
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+...
+-----END ENCRYPTED PRIVATE KEY-----
+
+`.trim();
+const srl = `
+7A3C8F1B5EXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+`.trim();
+return [
+    {
+      name: 'mTLS',
+      type: 'directory',
+      children: [
+        {
+          name: 'client_b_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.crt', type: 'file', content: certificate },
+                { name: 'client_b_root_ca.crt', type: 'file', content: certificate },
+                { name: 'client_b_root_ca.srl', type: 'file', content: srl },
+              ]
+            },
+            {
+              name: 'csr',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.csr', type: 'file', content: csr },
+              ]
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_b_root_ca.key', type: 'file', content: key },
+              ]
+            },
+          ]
+        },
+        {
+          name: 'client_b_cert',
+          type: 'directory',
+          children: [
+            { name: 'client_b_signed_by_client_c.crt', type: 'file', content: certificate },
+            { name: 'client_b_to_client_c.csr', type: 'file', content: csr },
+            { name: 'client_b.key', type: 'file', content: key },
+            { name: 'client_c_ca_chain.crt', type: 'file', content: chain },
+          ],
+        },
+        {
+          name: 'client_c_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_b_signed_by_client_c.crt', type: 'file', content: certificate },
+                { name: 'client_c_ca_chain.crt', type: 'file', content: chain },
+                { name: 'client_c_intermediate_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_intermediate_ca.srl', type: 'file', content: srl },
+                { name: 'client_c_root_ca.srl', type: 'file', content: srl },
+                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
+              ]
+            },
+            {
+              name: 'csr',
+              type: 'directory',
+              children: [
+                { name: 'client_b_to_client_c.csr', type: 'file', content: csr },
+                { name: 'client_c_intermediate_ca.csr', type: 'file', content: csr },
+              ]
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_c_root_ca.key', type: 'file', content: key },
+              ]
+            },
+          ]
+        },
+      ],
+    }
+  ];
+})();
+
+<FileTree
+  data={step6}
+  showSidePanel
+  defaultExpanded={true}
+  defaultOpenFile="client_b_intermediate_ca.crt"
+/>
   </TabItem>
   <TabItem value="schema-6" label="Schema" default>
     ![Step6](/img/security/protocols/mtls/step6.png)
@@ -685,7 +945,134 @@ openssl x509 -req -in csr/client_c_server.csr \
   </TabItem>
 
   <TabItem value="filetree-7" label="FileTree" default>
+export const step7 = (() => {
+const certificate = `
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+`.trim();
 
+const chain = `
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+`.trim();
+
+const csr = `
+-----BEGIN CERTIFICATE REQUEST-----
+...
+-----END CERTIFICATE REQUEST-----
+`.trim();
+
+const key = `
+-----BEGIN ENCRYPTED PRIVATE KEY-----
+...
+-----END ENCRYPTED PRIVATE KEY-----
+
+`.trim();
+const srl = `
+7A3C8F1B5EXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+`.trim();
+return [
+    {
+      name: 'mTLS',
+      type: 'directory',
+      children: [
+        {
+          name: 'client_b_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.crt', type: 'file', content: certificate },
+                { name: 'client_b_root_ca.crt', type: 'file', content: certificate },
+                { name: 'client_b_root_ca.srl', type: 'file', content: srl },
+              ]
+            },
+            {
+              name: 'csr',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.csr', type: 'file', content: csr },
+              ]
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_b_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_b_root_ca.key', type: 'file', content: key },
+              ]
+            },
+          ]
+        },
+        {
+          name: 'client_b_cert',
+          type: 'directory',
+          children: [
+            { name: 'client_b_signed_by_client_c.crt', type: 'file', content: certificate },
+            { name: 'client_b_to_client_c.csr', type: 'file', content: csr },
+            { name: 'client_b.key', type: 'file', content: key },
+            { name: 'client_c_ca_chain.crt', type: 'file', content: chain },
+          ],
+        },
+        {
+          name: 'client_c_ca',
+          type: 'directory',
+          children: [
+            {
+              name: 'certs',
+              type: 'directory',
+              children: [
+                { name: 'client_b_signed_by_client_c.crt', type: 'file', content: certificate },
+                { name: 'client_c_ca_chain.crt', type: 'file', content: chain },
+                { name: 'client_c_intermediate_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_intermediate_ca.srl', type: 'file', content: srl },
+                { name: 'client_c_root_ca.crt', type: 'file', content: certificate },
+                { name: 'client_c_root_ca.srl', type: 'file', content: srl },
+                { name: 'client_c_server.crt', type: 'file', content: certificate },
+              ]
+            },
+            {
+              name: 'csr',
+              type: 'directory',
+              children: [
+                { name: 'client_b_to_client_c.csr', type: 'file', content: csr },
+                { name: 'client_c_intermediate_ca.csr', type: 'file', content: csr },
+                { name: 'client_c_server.csr', type: 'file', content: csr },
+              ]
+            },
+            {
+              name: 'private',
+              type: 'directory',
+              children: [
+                { name: 'client_c_intermediate_ca.key', type: 'file', content: key },
+                { name: 'client_c_root_ca.key', type: 'file', content: key },
+                { name: 'client_c_server.key', type: 'file', content: key },
+              ]
+            },
+          ]
+        },
+      ],
+    }
+  ];
+})();
+
+<FileTree
+  data={step7}
+  showSidePanel
+  defaultExpanded={true}
+  defaultOpenFile="client_b_intermediate_ca.crt"
+/>
   </TabItem>
   <TabItem value="schema-7" label="Schema" default>
     ![Step7](/img/security/protocols/mtls/step7.png)
@@ -725,9 +1112,6 @@ openssl s_client -connect localhost:8443 \
 
   </TabItem>
 
-  <TabItem value="filetree-8" label="FileTree" default>
-
-  </TabItem>
   <TabItem value="schema-8" label="Schema" default>
     ![Step8](/img/security/protocols/mtls/step8.png)
   </TabItem>
