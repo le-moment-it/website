@@ -261,9 +261,7 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} Le Moment IT`,
     },
     plugins: [
-      require.resolve("docusaurus-lunr-search"), {
-        languages: ['en']
-      }
+      require.resolve("docusaurus-lunr-search")
     ],
     prism: {
       theme: prismThemes.github,
