@@ -86,7 +86,7 @@ Technically speaking, it is possible. However, building a new golden image **tak
 
 Having `flexible` and `reusable` startup commands allows your golden images to adapt to many use cases without the burden of recreating new ones.
 
-## `Golden image` creation 
+## Golden image creation 
 
 :::note
 Many tools exist that allow you to create `golden images`. However, in this article, I will only present tools that have become standard due to their popularity.
@@ -159,7 +159,6 @@ build {
       "FOO=hello world",
     ]
     inline = [
-      "echo Installing Redis",
       "sleep 30",
       "sudo apt-get update",
       "sudo apt-get upgrade -y"
