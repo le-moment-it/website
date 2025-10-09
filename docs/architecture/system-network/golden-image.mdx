@@ -92,7 +92,7 @@ Having a `flexible` and `reusable` starting commands allow your golden images to
 It exists many tools that will allow you to create a `golden images`. However, in this article, I will only present tools became a standard due to their popularity.
 :::
 
-To create a golden image you can use : [Hashicorp Packer]()
+To create a golden image you can use : [Hashicorp Packer](https://developer.hashicorp.com/packer)
 
 ### A quick word about Packer
 
@@ -486,3 +486,22 @@ After you are sure that your provisioning workflow is working as expected, you m
 The best example of tools that helps to reduce the "development time" of a golden image using ansible is [Ansible Molecule](https://ansible.readthedocs.io/projects/molecule/). Molecule is a testing tool that can help you to create a scenario where you will be able to deploy multiple time your playbook without having to recreate a new machine.
 A dedicated article on Ansible Role with Molecule will be created on this website in the future.
 :::
+
+### Image testing
+
+When you develop a new golden image, you might want to test that this image is answering your need. To do so, you can create multiple kind of tests :
+
+- Integration tests : Even if `packer` is not designed to perform tests, you may want to add integration tests inside your building process to ensure the quality of your golden image. A simple way to add them is to create an ansible playbook, that will be called with the `ansible provisioner` (in last position) that will perform readable and understandable tests for you.
+
+:::info
+By default, Ansible allows you to easily perform tests with module such as [ansible.builtin.assert](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/assert_module.html)
+:::
+
+
+- End to End (often call E2E) tests : These tests can be implemented only if your golden image is deployed in one of your testing environment.
+
+## Conclusion
+
+Golden images are key resources when you want to deploy virtual machines dynamically using a horizontal scaling system (such as AWS autoscaling group). However, its development can be a tedious task.
+
+Creating an efficient golden image development process through infrastructure as code is required to ensure the reusability and the maintanability of your golden images.
