@@ -10,111 +10,112 @@ import FileTree from '@site/src/components/Filetree';
 
 ## Introduction
 
-When our infrastructure is relying on virtual machines created dynamically according to load or traffic received on an application, we need to provide a virtual machine template that will be instanciated. 
+When our infrastructure relies on virtual machines created dynamically according to load or traffic received by an application, we need to provide a virtual machine template that will be instantiated. 
 
-This virtual machine template is called : **Golden Image**
+This virtual machine template is called a **Golden Image**.
 
-In this documentation, we will discover what are the requirements to create a reliable `golden image` and the challenges that will need to be solved.
+In this documentation, we will explore the requirements for creating a reliable `golden image` and the challenges that need to be addressed.
 
 ## Golden images
 
-In this part, we will define how we can create a reliable, evolutive, and flexible golden image.
+In this section, we will define how to create a reliable, scalable, and flexible golden image.
 
-### Maintanability
+### Maintainability
 
-The first challenge that we encounter when we want to create a maintainable golden image is how , after my first build, I will be able to update this image in the future.
+The first challenge we encounter when creating a maintainable golden image is determining how, after the initial build, we will be able to update this image in the future.
 
-The best solution to achieve this challenge is to build the image using infrastructure as code technologies. Defining your golden images using infrastructure as code has the following advantages :
+The best solution to address this challenge is to build the image using infrastructure as code technologies. Defining your golden images using infrastructure as code provides the following advantages:
 
 - Readable definition of the golden image configuration
 - Reproducible configuration
 - Using `git`, configuration is versioned and updatable
 
-### Environment agnostics
+### Environment agnostic
 
-In most of system infrastructure, there are multiple environments (`production`, `qa`, `integration` etc...). In order to ensure that your golden image will work in `production` as good as in your others environments, you need to create a golden image `environment agnostic`.
+In most system infrastructures, there are multiple environments (`production`, `qa`, `integration`, etc.). To ensure that your golden image works as well in `production` as it does in your other environments, you need to create an `environment agnostic` golden image.
 
-Having a golden image environment agnostic means that your golden image does not contain any information that is specific to an environment. Therefore, this golden image is deployable in all your environment.
+Having an environment agnostic golden image means that your golden image does not contain any information specific to an environment. Therefore, this golden image can be deployed across all your environments.
 
 :::info
-When you have multiple environments, it is very important to deploy the **same** golden image in all of them. Having duplicated golden images (one per environment) often leads to mistakes and drift configuration between your environments.
-Sharing golden images can be challenging while using public clouds (especially when environments are totally seperated. However, having a shared resource environment where you will be able to create this `golden image` for all your environment will allow you to bring your infrastructure to another level).
+When you have multiple environments, it is crucial to deploy the **same** golden image across all of them. Having duplicated golden images (one per environment) often leads to mistakes and configuration drift between your environments.
+Sharing golden images can be challenging when using public clouds (especially when environments are completely separated. However, having a shared resource environment where you can create this `golden image` for all your environments will elevate your infrastructure to the next level).
 :::
 
-This is how a typical `golden image` infrastructure is designed :
+This is how a typical `golden image` infrastructure is designed:
 
 ![Overview](/img/architecture/system-network/golden-image/golden-image.drawio.svg)
 
-Let's break this down :
+Let's break this down:
 
-    1. A `VCS` (in this example Gitlab), build the image and publish it in your public cloud.
+    1. A `VCS` (in this example GitLab) builds the image and publishes it to your public cloud.
 
 :::info
-Let's say that this image had been deployed in `dev` and `qa`
+Let's say that this image has been deployed in `dev` and `qa`
 :::
 
-    2. Suddenly a lot of traffic/load is received on your production environment and horizontal scale up threshold had been reached: **A new virtual machine must be created**
-    The load balancer will, using IAM roles, get access to the shared image. 
+    2. Suddenly, a lot of traffic/load is received on your production environment and the horizontal scale-up threshold has been reached: **A new virtual machine must be created**
+    The load balancer will, using IAM roles, gain access to the shared image. 
     
-    3. The loadbalancer creates an virtual machine instance of this image and add it to its pool.
+    3. The load balancer creates a virtual machine instance of this image and adds it to its pool.
 
 :::success
-The infrastructure had been **horizontally scaled up successfully**.
+The infrastructure has been **horizontally scaled up successfully**.
 :::
 
-### Configurable startup/warming command
+### Configurable startup/warming commands
 
-The last but not least important aspect of a golden image is how we will start the virtual machine that instanciate this image. In order to explain this point, let's take an example.
+The last but equally important aspect of a golden image is how we will start the virtual machine that instantiates this image. To explain this point, let's consider an example.
 
-> In your `production` environment you already deployed 3 virtual machines that serves your web application. Your web application is constantly evolving and its deployment is automated on the servers available in your pool.
+> In your `production` environment you have already deployed 3 virtual machines that serve your web application. Your web application is constantly evolving and its deployment is automated on the servers available in your pool.
 When your infrastructure is horizontally scaled, you want your new virtual machine to have the **same version** of the application as the other machines in the pool.
-To achieve this , you have two solutions :
+To achieve this, you have two solutions:
 
-- **NOT ADVICED** : Each time your development team release a new version of the application, you could build a new version of your golden image and upload this new application version inside the image.
+- **NOT RECOMMENDED**: Each time your development team releases a new version of the application, you could build a new version of your golden image and upload this new application version inside the image.
 
-:::warning Why it is not adviced 👆
-Technically speaking, it is possible. However, building a new golden image **is very long** (this part will be detailed later) and will **SLIGHLY** increase your releasing workflow.
+:::warning Why it is not recommended 👆
+Technically speaking, it is possible. However, building a new golden image **takes a very long time** (this aspect will be detailed later) and will **significantly** slow down your release workflow.
 :::
 
-- **ADVICED** : You may want to define a proper **starting/warming commands**. These commands are all actions that will be performed by a newly instanciated machine when it starts before it accepts to receive traffic from your loadbalancer. This is often called `bootstrap command` or also `user-data` (AWS vocabulary).
+- **RECOMMENDED**: You may want to define proper **startup/warming commands**. These commands are all actions that will be performed by a newly instantiated machine when it starts, before it accepts traffic from your load balancer. This is often called `bootstrap commands` or `user-data` (AWS terminology).
 
->    In our example, we could image that, as `starting/warming` command, our newly created machine will :
+>    In our example, we could imagine that, as `startup/warming` commands, our newly created machine will:
 >        - Pull the latest version of the application from a VCS and copy it to a specific local folder
->        - Initiate monitoring tools
+>        - Initialize monitoring tools
 >        - ...
->        - Start the webserver service.
+>        - Start the web server service.
 
-Having a `flexible` and `reusable` starting commands allow your golden images to adapt to many cases without having the burden of recreating new ones.
+Having `flexible` and `reusable` startup commands allows your golden images to adapt to many use cases without the burden of recreating new ones.
 
 ## `Golden image` creation 
 
 :::note
-It exists many tools that will allow you to create a `golden images`. However, in this article, I will only present tools became a standard due to their popularity.
+Many tools exist that allow you to create `golden images`. However, in this article, I will only present tools that have become standard due to their popularity.
 :::
 
-To create a golden image you can use : [Hashicorp Packer](https://developer.hashicorp.com/packer)
+To create a golden image you can use: [Hashicorp Packer](https://developer.hashicorp.com/packer)
 
-### A quick word about Packer
+### A quick overview of Packer
 
-Before moving forward with configuration example, let's deep into how does `packer` actually works. Packer workflow has 3 steps :
+Before moving forward with configuration examples, let's dive into how `packer` actually works. The Packer workflow has 3 steps:
 
-  1. Machine initialisation : Packer will initialise a **new temporary virtual machine** with specificies that you will define in the `builder` part. Usually, we define :
-        - Resources : CPU/RAM/Disks ...
-        - Network : NIC, Network, IP ...
-        - Image/ISO : We define which image we start our configuration from. This image represents the configuration of your temporary virtual machine **before any changes performed on it**. Usually we will choose default ISO that we can find on the web : Debian-13, Windows-server etc ...
-  2. Provisioning : After that your new temporary virtual machine had been instanciated in your infrastructure, it is time to configure it so it can become the template you need. Each actions performed is called `provisioning`. Provising can be either a `bash` or `poweshell` script, an ansible playbook, a file copy etc ...
+  1. Machine initialization: Packer will initialize a **new temporary virtual machine** with specifications that you define in the `builder` section. Usually, we define:
+        - Resources: CPU/RAM/Disks...
+        - Network: NIC, Network, IP...
+        - Image/ISO: We define which image we start our configuration from. This image represents the configuration of your temporary virtual machine **before any changes are performed on it**. Usually we choose default ISOs that we can find on the web: Debian-13, Windows Server, etc.
+  2. Provisioning: After your new temporary virtual machine has been instantiated in your infrastructure, it is time to configure it so it can become the template you need. Each action performed is called `provisioning`. Provisioning can be either a `bash` or `PowerShell` script, an Ansible playbook, a file copy, etc.
 
-  3. Image preparation : This is the last step, it stops the temporary virtual machine, and perform actions to prepare it according to the `builder` defined. For example, if you want to create a `Vsphere virtual machine template`, the machine will stopped and a snapshot will be taken. On the contrary, if you want to create an AWS AMI, your machine will be stopped, a snapshot will be taken and an AMI will created from your snapshot.
+  3. Image preparation: This is the final step, where it stops the temporary virtual machine and performs actions to prepare it according to the `builder` defined. For example, if you want to create a `vSphere virtual machine template`, the machine will be stopped and a snapshot will be taken. Conversely, if you want to create an AWS AMI, your machine will be stopped, a snapshot will be taken, and an AMI will be created from your snapshot.
 
 ### Configuration overview
 
-Hashicorp Packer (also called `packer`) is a simple tool that has two main configuration part (written in HCL language) :
+Hashicorp Packer (also called `packer`) is a simple tool that has two main configuration parts (written in HCL language):
 
-  - `Builder` : This part of `packer` configuration defines what you want to build an how you want to build it.
-  - `Provisionner` : This part defines all actions that you will performed to prepare your machines. You can define one or multiple provisionner that will be executed in order.
+  - `Builder`: This part of the `packer` configuration defines what you want to build and how you want to build it.
+  - `Provisioner`: This part defines all actions that you will perform to prepare your machines. You can define one or multiple provisioners that will be executed in order.
 
 
-Let's see an example here :
+Let's see an example here:
+
 
 ```json
 # Definition of needed plugins
@@ -234,24 +235,24 @@ As you can see, an image had been created with the ami id : `ami-0ce5xxxxxxxxxxx
 
 ### Provisioning
 
-It exists 2 types of provisioners in Packer :
+There are 2 types of provisioners in Packer:
 
   - [The official provisioners](https://developer.hashicorp.com/packer/docs/provisioners)
   - [The community provisioners](https://developer.hashicorp.com/packer/integrations?components=provisioner&tiers=official,partner,community)
 
 
-As I mentioned above, when it comes to configuration, I prefer using infrastructure as code technologies. That's why I often use the [Ansible provisioners](https://developer.hashicorp.com/packer/integrations/hashicorp/ansible).
+As I mentioned above, when it comes to configuration, I prefer using infrastructure as code technologies. That's why I often use the [Ansible provisioner](https://developer.hashicorp.com/packer/integrations/hashicorp/ansible).
 
 <Admonition type="note" icon="💡" title="But also ...">
-  You may also want to reduce at the minimum the number of tool that you want to use to configure your golden image. In that case, you can use native provisioners such as [shell](https://developer.hashicorp.com/packer/docs/provisioners/shell) or [powershell](https://developer.hashicorp.com/packer/docs/provisioners/powershell)
+  You may also want to minimize the number of tools that you use to configure your golden image. In that case, you can use native provisioners such as [shell](https://developer.hashicorp.com/packer/docs/provisioners/shell) or [powershell](https://developer.hashicorp.com/packer/docs/provisioners/powershell)
 </Admonition>
 
-Let's create a simple Ansible playbook to install `nginx`. Our playbook will :
+Let's create a simple Ansible playbook to install `nginx`. Our playbook will:
 
 1. Install `nginx` using `apt` packages
 2. Create the folder that will host the website
 3. Create a simple `nginx` vhost
-4. Create a warming script (using crontab) to download the last version of the website from a S3
+4. Create a warming script (using crontab) to download the latest version of the website from S3
 
 :::warning
 This is an example playbook. **DO NOT use it in `production`**
@@ -447,61 +448,60 @@ Build 'le-moment-it.amazon-ebs.ubuntu' finished after 6 minutes 43 seconds.
 eu-west-1: ami-XXXXXXXXXX
 ```
 
-If you already familiar with `ansible`, you recognised that, after the temporary machine launched, the machine had been configured with our ansible playbook.
+If you are already familiar with `ansible`, you will recognize that, after the temporary machine launched, the machine was configured with our Ansible playbook.
 
-As soon as a new machine will be instanciated with this golden image, it will automatically download the website from the S3 and will be ready to serve traffic 🚀
+As soon as a new machine is instantiated with this golden image, it will automatically download the website from S3 and will be ready to serve traffic 🚀
 
 ## Challenges
 
-Creating golden images is great, but it has many challenges that need to be overcome. Let's list this challenges in this part.
+Creating golden images is excellent, but it presents many challenges that need to be overcome. Let's list these challenges in this section.
 
 ### Build/Development time
 
-The first, and most obvious challenge we face when we start to work with golden image creation is the time needed to create an image.
+The first, and most obvious challenge we face when we start working with golden image creation is the time needed to create an image.
 
-In the previous example, the building time was **around 7 minutes** (for an image without a lot of configuration)
+In the previous example, the building time was **around 7 minutes** (for an image without extensive configuration)
 
 ```bash
 ==> Wait completed after 6 minutes 43 seconds
 ```
 
-Let's be clear : **We cannot reduce this time**.
+Let's be clear: **We cannot reduce this time**.
 
-Having such a long building time will slighly increase your "development time". By "development time", I mean the time the that you will need to either write the configuration and test it. If you development workflow is :
+Having such a long building time will significantly increase your "development time". By "development time", I mean the time that you will need to write the configuration and test it. If your development workflow is:
 
 - I create a piece of configuration
 - I launch a `packer build`
-- I wait for the build ...
-- There is an error : I read the error message
+- I wait for the build...
+- There is an error: I read the error message
 - I fix the piece of configuration
 - I launch a `packer build`
 - ... 
 
-You will **loose a lot of time**.
+You will **lose a lot of time**.
 
-I **highly recommend** you to create a test environment where you will be able to reproduce the provisioning of your temporary machine without any delay. This will help you to test and fix faster configuration you may have during your development time.
-After you are sure that your provisioning workflow is working as expected, you may launch a new `packer build` to finally get your golden image.
+I **highly recommend** that you create a test environment where you will be able to reproduce the provisioning of your temporary machine without any delay. This will help you test and fix configuration issues more quickly during your development time.
+After you are confident that your provisioning workflow is working as expected, you may launch a new `packer build` to finally get your golden image.
 
 :::info
-The best example of tools that helps to reduce the "development time" of a golden image using ansible is [Ansible Molecule](https://ansible.readthedocs.io/projects/molecule/). Molecule is a testing tool that can help you to create a scenario where you will be able to deploy multiple time your playbook without having to recreate a new machine.
+The best example of a tool that helps reduce the "development time" of a golden image using Ansible is [Ansible Molecule](https://ansible.readthedocs.io/projects/molecule/). Molecule is a testing tool that can help you create a scenario where you will be able to deploy your playbook multiple times without having to recreate a new machine.
 A dedicated article on Ansible Role with Molecule will be created on this website in the future.
 :::
 
 ### Image testing
 
-When you develop a new golden image, you might want to test that this image is answering your need. To do so, you can create multiple kind of tests :
+When you develop a new golden image, you might want to test that this image meets your needs. To do so, you can create multiple types of tests:
 
-- Integration tests : Even if `packer` is not designed to perform tests, you may want to add integration tests inside your building process to ensure the quality of your golden image. A simple way to add them is to create an ansible playbook, that will be called with the `ansible provisioner` (in last position) that will perform readable and understandable tests for you.
+- Integration tests: Even though `packer` is not designed to perform tests, you may want to add integration tests inside your building process to ensure the quality of your golden image. A simple way to add them is to create an Ansible playbook, which will be called with the `ansible provisioner` (in last position) that will perform readable and understandable tests for you.
 
 :::info
-By default, Ansible allows you to easily perform tests with module such as [ansible.builtin.assert](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/assert_module.html)
+By default, Ansible allows you to easily perform tests with modules such as [ansible.builtin.assert](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/assert_module.html)
 :::
 
-
-- End to End (often call E2E) tests : These tests can be implemented only if your golden image is deployed in one of your testing environment.
+- End to End (often called E2E) tests: These tests can be implemented only if your golden image is deployed in one of your testing environments.
 
 ## Conclusion
 
-Golden images are key resources when you want to deploy virtual machines dynamically using a horizontal scaling system (such as AWS autoscaling group). However, its development can be a tedious task.
+Golden images are key resources when you want to deploy virtual machines dynamically using a horizontal scaling system (such as AWS Auto Scaling Groups). However, their development can be a tedious task.
 
-Creating an efficient golden image development process through infrastructure as code is required to ensure the reusability and the maintanability of your golden images.
+Creating an efficient golden image development process through infrastructure as code is required to ensure the reusability and maintainability of your golden images.
