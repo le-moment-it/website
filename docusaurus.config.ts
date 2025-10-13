@@ -204,7 +204,7 @@ const config: Config = {
           items: [
             {
               label: 'System & Networks',
-              to: 'docs/category/introduction',
+              to: 'docs/category/system--networks',
             },
             {
               label: 'Infrastructure As Code',

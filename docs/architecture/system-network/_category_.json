@@ -1,8 +1,8 @@
 {
-    "label": "Introduction",
+    "label": "System & Networks",
     "position": 1,
     "link": {
         "type": "generated-index",
-        "description": "5 minutes to learn the most important Docusaurus concepts."
+        "description": "Find in this section, architecture good practices and design patern"
     }
 }
