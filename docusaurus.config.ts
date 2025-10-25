@@ -208,7 +208,7 @@ const config: Config = {
             },
             {
               label: 'Infrastructure As Code',
-              to: 'docs/architecture/iac/intro',
+              to: 'docs/architecture/iac/ansible-role',
             }
           ],
         },
